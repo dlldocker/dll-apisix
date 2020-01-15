@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  apisix:
+    build: ./centos
+    restart: always
+    volumes:
+      - ./example/apisix_dashboard:/usr/local/apisix/dashboard
+      - ./example/apisix_log:/usr/local/apisix/logs
+      - ./example/apisix_conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+    ports:
+      - 9080:9080
+      - 9443:9443
+    networks:
+      - etcd-net
+      - apisix
+
+networks:
+  etcd-net:
+    external: true
+  apisix:
+    name: apisix
+    driver: bridge
